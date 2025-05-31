@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morning Batch - National Computer Training Centre</title>
+    <link rel="icon" type="image/jpg" href="logo.jpg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="batch.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .batch-content {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .verification-form {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .verification-form h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(45, 134, 83, 0.1);
+            outline: none;
+        }
+
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .instructions {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .instructions h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .instructions ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .instructions li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #meetLink {
+            margin-top: 20px;
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+
+        #meetLink a {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        #meetLink a:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.jpg" alt="NCTC Logo" class="logo-img">
+                </a>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <i class="fas fa-times" onclick="hideMenu()"></i>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li class="has-submenu">
+                        <a href="about_us.html">About Us</a>
+                        <ul class="submenu">
+                            <li><a href="mission.html">Our Mission</a></li>
+                            <li><a href="recognition.html">Recognition</a></li>
+                            <li><a href="director.html">Director's Message</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="our_courses.html">Our Courses</a></li>
+                    <li class="has-submenu">
+                        <a href="#">Admission</a>
+                        <ul class="submenu">
+                            <li><a href="online_admission.html">Online Admission</a></li>
+                            <li><a href="offline_admission.html">Offline Admission</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#" class="active">Online Class</a>
+                        <ul class="submenu">
+                            <li><a href="morning_batch.html" class="active">Morning Batch</a></li>
+                            <li><a href="prenoon_batch.html">Pre-Noon Batch</a></li>
+                            <li><a href="afternoon_batch.html">Afternoon Batch</a></li>
+                            <li><a href="evening_batch.html">Evening Batch</a></li>
+                            <li><a href="late_evening_batch.html">Late Evening Batch</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="noticeboard.html">Notice Board</a></li>
+                    <li><a href="index.html#gallery">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <i class="fas fa-bars" onclick="showMenu()"></i>
+        </nav>
+    </header>
+
+    <!-- Batch Hero Section -->
+    <section class="batch-hero">
+        <div class="batch-hero-content">
+            <h1>Morning Batch</h1>
+            <div class="batch-timing">
+                <i class="fas fa-clock"></i>
+                <span>8:00 AM - 10:00 AM</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Batch Content -->
+    <section class="batch-content">
+        <div class="instructions">
+            <h3>Instructions for Online Class</h3>
+            <ul>
+                <li>Enter your receipt number provided during admission</li>
+                <li>The receipt number will be verified before providing access</li>
+                <li>Make sure you have a stable internet connection</li>
+                <li>Join the class 5 minutes before the scheduled time</li>
+                <li>Keep your video on and microphone muted during the class</li>
+            </ul>
+        </div>
+
+        <div class="verification-form">
+            <h2>Verify Your Receipt</h2>
+            <form id="verificationForm" onsubmit="verifyReceipt(event)">
+                <div class="form-group">
+                    <label for="receiptNumber">Receipt Number</label>
+                    <input type="text" id="receiptNumber" name="receiptNumber" required 
+                           placeholder="Enter your receipt number">
+                    <div class="error-message" id="errorMessage">Invalid receipt number. Please try again.</div>
+                </div>
+                <button type="submit" class="submit-btn">Verify & Join Class</button>
+            </form>
+        </div>
+
+        <div id="meetLink" class="hidden">
+            <h3>Join Your Class</h3>
+            <p>Click below to join the Morning Batch class:</p>
+            <a href="https://meet.google.com/zrn-jhqe-hao" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-video"></i> Join Google Meet
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Phone: +91 9775765498 / +91 9775862051</p>
+                <p>Location: Kumbhira, Sabdalpur, Baishnabnagar, Malda - 732201</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="our_courses.html">Courses</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 NCTC. Designed and Developed by nctconline.com</p>
+        </div>
+    </footer>
+
+    <script>
+        function verifyReceipt(event) {
+            event.preventDefault();
+            
+            const receiptNumber = document.getElementById('receiptNumber').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const meetLink = document.getElementById('meetLink');
+            
+            // Here you would typically make an API call to verify the receipt number
+            // For now, we'll just show the meet link after a brief delay to simulate verification
+            setTimeout(() => {
+                if (receiptNumber.trim() !== '') {
+                    errorMessage.style.display = 'none';
+                    meetLink.style.display = 'block';
+                    document.querySelector('.verification-form').style.display = 'none';
+                } else {
+                    errorMessage.style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function hideMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.style.right = '-200px';
+        }
+
+        function showMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.style.right = '0';
+        }
+    </script>
+</body>
+</html> 
