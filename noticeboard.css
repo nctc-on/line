@@ -1,0 +1,153 @@
+/* Notice Board Hero Section */
+.notice-hero {
+    height: 40vh;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1577563908411-5077b6dc7624') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    margin-top: 60px;
+}
+
+.notice-hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.notice-hero-content p {
+    font-size: 1.2rem;
+}
+
+/* Notice Categories */
+.notice-categories {
+    background: var(--light-bg);
+    padding: 2rem 0;
+}
+
+.category-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.category-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background: white;
+    color: var(--primary-color);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.category-btn:hover,
+.category-btn.active {
+    background: var(--secondary-color);
+    color: white;
+}
+
+/* Notices Section */
+.notices-section {
+    padding: 4rem 0;
+    background: var(--light-bg);
+}
+
+.notice-card {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.notice-card:hover {
+    transform: translateY(-5px);
+}
+
+.notice-card.important {
+    border-left: 4px solid var(--accent-color);
+}
+
+.notice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.notice-tag {
+    background: var(--secondary-color);
+    color: white;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.notice-date {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.notice-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.notice-card p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.notice-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+.notice-contact {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.notice-details {
+    color: var(--secondary-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.notice-details:hover {
+    color: var(--primary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .notice-hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .category-buttons {
+        padding: 0 1rem;
+    }
+
+    .notice-card {
+        margin: 1rem;
+    }
+
+    .notice-footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+} 

@@ -1,0 +1,329 @@
+/* Pre-Noon Batch Specific Styles */
+
+/* Custom Variables */
+:root {
+    --prenoon-primary: #ff6b6b;
+    --prenoon-secondary: #ffd93d;
+    --prenoon-accent: #4ecdc4;
+}
+
+/* Hero Section */
+.batch-hero {
+    height: 50vh;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    margin-top: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.batch-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--prenoon-primary), var(--prenoon-secondary));
+    opacity: 0.3;
+    animation: gradientFlow 10s ease infinite;
+}
+
+@keyframes gradientFlow {
+    0% { transform: scale(1.1) rotate(0deg); }
+    50% { transform: scale(1) rotate(5deg); }
+    100% { transform: scale(1.1) rotate(0deg); }
+}
+
+.batch-hero-content {
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 1s ease;
+}
+
+.batch-hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.batch-timing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.batch-timing i {
+    color: var(--prenoon-secondary);
+}
+
+/* Schedule Section */
+.schedule-section {
+    padding: 60px 0;
+    background: #f8f9fa;
+    position: relative;
+}
+
+.schedule-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 217, 61, 0.1));
+    pointer-events: none;
+}
+
+.schedule-section h2 {
+    text-align: center;
+    color: var(--prenoon-primary);
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+    position: relative;
+}
+
+.schedule-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: var(--prenoon-accent);
+}
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px;
+}
+
+.schedule-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.schedule-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-color: var(--prenoon-accent);
+}
+
+.time-slot {
+    border-bottom: 2px solid var(--prenoon-secondary);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.time-slot h3 {
+    color: var(--prenoon-primary);
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+.time-slot p {
+    color: var(--prenoon-accent);
+    font-weight: 500;
+}
+
+.class-details ul {
+    list-style: none;
+    padding: 0;
+}
+
+.class-details ul li {
+    padding: 8px 0;
+    color: #666;
+    position: relative;
+    padding-left: 25px;
+}
+
+.class-details ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--prenoon-primary);
+}
+
+/* Benefits Section */
+.benefits-section {
+    padding: 60px 0;
+    background: white;
+}
+
+.benefits-section h2 {
+    text-align: center;
+    color: var(--prenoon-primary);
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 20px;
+}
+
+.benefit-card {
+    text-align: center;
+    padding: 30px;
+    border-radius: 15px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+    background: white;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-color: var(--prenoon-secondary);
+}
+
+.benefit-card i {
+    font-size: 2.5rem;
+    color: var(--prenoon-primary);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.benefit-card:hover i {
+    transform: scale(1.1);
+    color: var(--prenoon-secondary);
+}
+
+.benefit-card h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.benefit-card p {
+    color: #666;
+}
+
+/* Enrollment Section */
+.enrollment-section {
+    padding: 60px 0;
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+                url('https://images.unsplash.com/photo-1523240795612-9a054b0db644') center/cover;
+    color: white;
+    text-align: center;
+    position: relative;
+}
+
+.enrollment-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--prenoon-primary), var(--prenoon-secondary));
+    opacity: 0.3;
+}
+
+.enrollment-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.enrollment-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.enrollment-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.enroll-btn, .contact-btn {
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.enroll-btn {
+    background: var(--prenoon-primary);
+    color: white;
+}
+
+.contact-btn {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.enroll-btn:hover {
+    background: var(--prenoon-secondary);
+    transform: translateY(-2px);
+}
+
+.contact-btn:hover {
+    background: white;
+    color: var(--prenoon-primary);
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .batch-hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .batch-timing {
+        font-size: 1.2rem;
+    }
+
+    .schedule-grid,
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .enrollment-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .enroll-btn, .contact-btn {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+} 

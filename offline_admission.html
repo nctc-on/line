@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Admission - National Computer Training Centre</title>
+    <link rel="icon" type="image/jpg" href="logo.jpg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Enhanced Offline Admission Styles */
+        .admission-hero.offline {
+            height: 50vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1') center/cover;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admission-hero.offline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary-color), transparent);
+            opacity: 0.3;
+            animation: gradientShift 10s infinite alternate;
+        }
+
+        @keyframes gradientShift {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .admission-hero-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease;
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .admission-hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .admission-hero-content p {
+            font-size: 1.4rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.5s;
+        }
+
+        /* Process Steps */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 40px 0;
+        }
+
+        .step {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+            transform: scaleY(0);
+            transition: transform 0.4s ease;
+            transform-origin: top;
+        }
+
+        .step:hover::before {
+            transform: scaleY(1);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover .step-number {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(45, 134, 83, 0.3);
+        }
+
+        .step-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .step-content h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        .step:hover h3::after {
+            width: 100px;
+        }
+
+        .step-content p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Documents Section */
+        .documents-section {
+            padding: 40px 0;
+            background: #f8f9fa;
+        }
+
+        .documents-section h3 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .document-item {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .document-item::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary-color), transparent);
+            opacity: 0.1;
+            transition: all 0.5s ease;
+        }
+
+        .document-item:hover::before {
+            top: 0;
+        }
+
+        .document-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .document-item i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .document-item:hover i {
+            transform: scale(1.1) rotate(5deg);
+            color: var(--primary-dark);
+        }
+
+        .document-item h4 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .document-item p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 60px 0;
+            background: white;
+        }
+
+        .contact-section h3 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .contact-item i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .contact-item h4 {
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .contact-item p {
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-contact {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn i {
+            font-size: 1.3rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Animation Classes */
+        .animate-fade-in {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .animate-slide-in-top {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .animate-slide-in-bottom {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.3s;
+        }
+
+        .animate-scale-in {
+            opacity: 0;
+            transform: scale(0.95);
+            animation: scaleIn 0.8s ease forwards;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Navigation Menu Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        .nav-links {
+            flex: 1;
+            text-align: right;
+        }
+
+        .nav-links ul {
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+        }
+
+        .nav-links ul li {
+            list-style: none;
+            display: inline-block;
+            padding: 8px 12px;
+            position: relative;
+        }
+
+        .nav-links ul li a {
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links ul li::after {
+            content: '';
+            width: 0%;
+            height: 2px;
+            background: var(--primary-color);
+            display: block;
+            margin: auto;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links ul li:hover::after {
+            width: 100%;
+        }
+
+        /* Submenu Styles */
+        .has-submenu {
+            position: relative;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 250px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .has-submenu:hover .submenu {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .submenu li {
+            display: block !important;
+            padding: 8px 20px !important;
+            margin: 0 !important;
+            width: 100%;
+        }
+
+        .submenu li a {
+            display: block;
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+            padding: 5px 0;
+            white-space: nowrap;
+        }
+
+        .submenu li a:hover {
+            color: var(--primary-color);
+        }
+
+        .batch-time {
+            font-size: 0.8rem;
+            color: #666;
+            margin-left: 5px;
+        }
+
+        /* Active Link Style */
+        .nav-links ul li a.active {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        /* Mobile Menu Icons */
+        .fa-bars, .fa-times {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        /* Mobile Menu Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                background: white;
+                height: 100vh;
+                width: 200px;
+                top: 0;
+                right: -200px;
+                text-align: left;
+                z-index: 1000;
+                transition: 0.5s;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+                overflow-y: auto;
+            }
+
+            .nav-links ul {
+                padding: 30px;
+            }
+
+            .nav-links ul li {
+                display: block;
+                padding: 15px 0;
+            }
+
+            .fa-bars, .fa-times {
+                display: block;
+                z-index: 999;
+            }
+
+            .fa-times {
+                margin: 20px;
+                font-size: 1.8rem;
+            }
+
+            .submenu {
+                position: static;
+                box-shadow: none;
+                display: none;
+                padding-left: 20px;
+                min-width: auto;
+                background: transparent;
+            }
+
+            .has-submenu:hover .submenu {
+                display: none;
+            }
+
+            .has-submenu.active .submenu {
+                display: block;
+            }
+
+            .batch-time {
+                display: block;
+                margin-top: 5px;
+            }
+
+            .nav-links ul li::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="animate-fade-in">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.jpg" alt="NCTC Logo" class="logo-img">
+                </a>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <i class="fas fa-times" onclick="hideMenu()"></i>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li class="has-submenu">
+                        <a href="about_us.html">About Us</a>
+                        <ul class="submenu">
+                            <li><a href="mission.html">Our Mission</a></li>
+                            <li><a href="recognition.html">Recognition</a></li>
+                            <li><a href="director.html">Director's Message</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="our_courses.html">Our Courses</a></li>
+                    <li class="has-submenu">
+                        <a href="#">Admission</a>
+                        <ul class="submenu">
+                            <li><a href="online_admission.html">Online Admission</a></li>
+                            <li><a href="offline_admission.html" class="active">Offline Admission</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#">Online Class</a>
+                        <ul class="submenu">
+                            <li><a href="morning_batch.html">Morning Batch <span class="batch-time">(8:00 AM - 10:00 AM)</span></a></li>
+                            <li><a href="prenoon_batch.html">Pre-Noon Batch <span class="batch-time">(10:30 AM - 12:30 PM)</span></a></li>
+                            <li><a href="afternoon_batch.html">Afternoon Batch <span class="batch-time">(1:00 PM - 3:00 PM)</span></a></li>
+                            <li><a href="evening_batch.html">Evening Batch <span class="batch-time">(3:15 PM - 5:15 PM)</span></a></li>
+                            <li><a href="late_evening_batch.html">Late Evening Batch <span class="batch-time">(5:30 PM - 7:30 PM)</span></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="noticeboard.html">Notice Board</a></li>
+                    <li><a href="exam.html">Online Exam</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <i class="fas fa-bars" onclick="showMenu()"></i>
+        </nav>
+    </header>
+
+    <!-- Offline Admission Hero Section -->
+    <section class="admission-hero offline">
+        <div class="admission-hero-content">
+            <h1 class="animate-slide-in-top">Offline Admission</h1>
+            <p class="animate-slide-in-bottom">Visit Our Campus to Complete Your Admission</p>
+        </div>
+    </section>
+
+    <!-- Offline Admission Information -->
+    <section class="admission-info">
+        <div class="container">
+            <div class="info-wrapper animate-scale-in">
+                <div class="info-header">
+                    <h2>Admission Process</h2>
+                    <p>Follow these steps to complete your offline admission</p>
+                </div>
+
+                <div class="process-steps">
+                    <div class="step hover-lift animate-fade-in" style="animation-delay: 0.2s;">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Visit Our Campus</h3>
+                            <p>Visit our campus during office hours (Monday to Saturday, 9 AM to 5 PM)</p>
+                        </div>
+                    </div>
+
+                    <div class="step hover-lift animate-fade-in" style="animation-delay: 0.4s;">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Collect Admission Form</h3>
+                            <p>Obtain the admission form from our admission office</p>
+                        </div>
+                    </div>
+
+                    <div class="step hover-lift animate-fade-in" style="animation-delay: 0.6s;">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Submit Documents</h3>
+                            <p>Submit the filled form along with required documents</p>
+                        </div>
+                    </div>
+
+                    <div class="step hover-lift animate-fade-in" style="animation-delay: 0.8s;">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Complete Payment</h3>
+                            <p>Pay the admission fees at our accounts department</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Required Documents -->
+                <div class="documents-section animate-slide-in-bottom">
+                    <h3>Required Documents</h3>
+                    <div class="documents-grid">
+                        <div class="document-item hover-lift">
+                            <i class="fas fa-id-card"></i>
+                            <h4>Identity Proof</h4>
+                            <p>Aadhar Card / Voter ID / Passport</p>
+                        </div>
+                        <div class="document-item hover-lift">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h4>Educational Documents</h4>
+                            <p>Previous education certificates and marksheets</p>
+                        </div>
+                        <div class="document-item hover-lift">
+                            <i class="fas fa-image"></i>
+                            <h4>Photographs</h4>
+                            <p>4 recent passport size photographs</p>
+                        </div>
+                        <div class="document-item hover-lift">
+                            <i class="fas fa-home"></i>
+                            <h4>Address Proof</h4>
+                            <p>Recent utility bill / Rental agreement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="contact-section animate-slide-in-bottom">
+                    <h3>Visit Us</h3>
+                    <div class="contact-info">
+                        <div class="contact-item hover-lift">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Address</h4>
+                                <p>Kumbhira, Sabdalpur<br>Baishnabnagar, Malda - 732201</p>
+                            </div>
+                        </div>
+                        <div class="contact-item hover-lift">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Office Hours</h4>
+                                <p>Monday - Saturday<br>9:00 AM - 5:00 PM</p>
+                            </div>
+                        </div>
+                        <div class="contact-item hover-lift">
+                            <i class="fas fa-phone-alt"></i>
+                            <div>
+                                <h4>Contact Numbers</h4>
+                                <p>+91 9775765498<br>+91 9775862051</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="whatsapp-contact">
+                        <button onclick="sendLocationViaWhatsApp()" class="whatsapp-btn hover-glow active-scale">
+                            <i class="fab fa-whatsapp"></i> Contact via WhatsApp
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Location Information -->
+                <div class="location-section animate-slide-in-bottom">
+                    <h3>Your Location</h3>
+                    <div class="form-group state-district-pair">
+                        <label for="state">State</label>
+                        <select id="state" name="state" class="state-select focus-glow" required>
+                            <option value="">Select State</option>
+                            <option value="West Bengal">West Bengal</option>
+                        </select>
+                        <div class="location-btn">
+                            <button type="button" onclick="useCurrentLocation(this)" class="hover-glow">
+                                <i class="fas fa-map-marker-alt"></i> Use My Location
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="district">District</label>
+                        <select id="district" name="district" class="district-select focus-glow" required disabled>
+                            <option value="">Select District</option>
+                            <!-- West Bengal Districts -->
+                            <option value="Alipurduar" data-state="West Bengal">Alipurduar</option>
+                            <option value="Bankura" data-state="West Bengal">Bankura</option>
+                            <option value="Birbhum" data-state="West Bengal">Birbhum</option>
+                            <option value="Cooch Behar" data-state="West Bengal">Cooch Behar</option>
+                            <option value="Dakshin Dinajpur" data-state="West Bengal">Dakshin Dinajpur</option>
+                            <option value="Darjeeling" data-state="West Bengal">Darjeeling</option>
+                            <option value="Hooghly" data-state="West Bengal">Hooghly</option>
+                            <option value="Howrah" data-state="West Bengal">Howrah</option>
+                            <option value="Jalpaiguri" data-state="West Bengal">Jalpaiguri</option>
+                            <option value="Jhargram" data-state="West Bengal">Jhargram</option>
+                            <option value="Kalimpong" data-state="West Bengal">Kalimpong</option>
+                            <option value="Kolkata" data-state="West Bengal">Kolkata</option>
+                            <option value="Malda" data-state="West Bengal">Malda</option>
+                            <option value="Murshidabad" data-state="West Bengal">Murshidabad</option>
+                            <option value="Nadia" data-state="West Bengal">Nadia</option>
+                            <option value="North 24 Parganas" data-state="West Bengal">North 24 Parganas</option>
+                            <option value="Paschim Bardhaman" data-state="West Bengal">Paschim Bardhaman</option>
+                            <option value="Paschim Medinipur" data-state="West Bengal">Paschim Medinipur</option>
+                            <option value="Purba Bardhaman" data-state="West Bengal">Purba Bardhaman</option>
+                            <option value="Purba Medinipur" data-state="West Bengal">Purba Medinipur</option>
+                            <option value="Purulia" data-state="West Bengal">Purulia</option>
+                            <option value="South 24 Parganas" data-state="West Bengal">South 24 Parganas</option>
+                            <option value="Uttar Dinajpur" data-state="West Bengal">Uttar Dinajpur</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="block">Block/Municipality</label>
+                        <select id="block" name="block" class="block-select focus-glow" required disabled>
+                            <option value="">Select Block/Municipality</option>
+                            <!-- Malda District Blocks -->
+                            <option value="English Bazar" data-district="Malda">English Bazar Municipality</option>
+                            <option value="Old Malda" data-district="Malda">Old Malda Municipality</option>
+                            <option value="Bamongola" data-district="Malda">Bamongola Block</option>
+                            <option value="Gazole" data-district="Malda">Gazole Block</option>
+                            <option value="Habibpur" data-district="Malda">Habibpur Block</option>
+                            <option value="Harishchandrapur-I" data-district="Malda">Harishchandrapur-I Block</option>
+                            <option value="Harishchandrapur-II" data-district="Malda">Harishchandrapur-II Block</option>
+                            <option value="Kaliachak-I" data-district="Malda">Kaliachak-I Block</option>
+                            <option value="Kaliachak-II" data-district="Malda">Kaliachak-II Block</option>
+                            <option value="Kaliachak-III" data-district="Malda">Kaliachak-III Block</option>
+                            <option value="Chanchal-I" data-district="Malda">Chanchal-I Block</option>
+                            <option value="Chanchal-II" data-district="Malda">Chanchal-II Block</option>
+                            <option value="English Bazar" data-district="Malda">English Bazar Block</option>
+                            <option value="Manikchak" data-district="Malda">Manikchak Block</option>
+                            <option value="Old Malda" data-district="Malda">Old Malda Block</option>
+                            <option value="Ratua-I" data-district="Malda">Ratua-I Block</option>
+                            <option value="Ratua-II" data-district="Malda">Ratua-II Block</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="police-station">Police Station</label>
+                        <select id="police-station" name="police-station" class="police-station-select focus-glow" required disabled>
+                            <option value="">Select Police Station</option>
+                            <!-- Police Stations in Malda District -->
+                            <!-- English Bazar Police Stations -->
+                            <option value="English Bazar" data-block="English Bazar">English Bazar Police Station</option>
+                            <option value="English Bazar Women" data-block="English Bazar">English Bazar Women Police Station</option>
+                            <option value="Milki" data-block="English Bazar">Milki Police Station</option>
+                            <option value="Kotwali" data-block="English Bazar">Kotwali Police Station</option>
+                            
+                            <!-- Old Malda Police Stations -->
+                            <option value="Old Malda" data-block="Old Malda">Old Malda Police Station</option>
+                            <option value="Mangalbari" data-block="Old Malda">Mangalbari Police Station</option>
+                            
+                            <!-- Bamongola Police Stations -->
+                            <option value="Bamongola" data-block="Bamongola">Bamongola Police Station</option>
+                            
+                            <!-- Gazole Police Stations -->
+                            <option value="Gazole" data-block="Gazole">Gazole Police Station</option>
+                            <option value="Pandua" data-block="Gazole">Pandua Police Station</option>
+                            
+                            <!-- Habibpur Police Stations -->
+                            <option value="Habibpur" data-block="Habibpur">Habibpur Police Station</option>
+                            <option value="Bulbulchandi" data-block="Habibpur">Bulbulchandi Police Station</option>
+                            
+                            <!-- Harishchandrapur-I Police Stations -->
+                            <option value="Harishchandrapur" data-block="Harishchandrapur-I">Harishchandrapur Police Station</option>
+                            <option value="Sadullapur" data-block="Harishchandrapur-I">Sadullapur Police Station</option>
+                            
+                            <!-- Harishchandrapur-II Police Stations -->
+                            <option value="Harishchandrapur" data-block="Harishchandrapur-II">Harishchandrapur Police Station</option>
+                            <option value="Islampur" data-block="Harishchandrapur-II">Islampur Police Station</option>
+                            
+                            <!-- Kaliachak-I Police Stations -->
+                            <option value="Kaliachak" data-block="Kaliachak-I">Kaliachak Police Station</option>
+                            <option value="Mothabari" data-block="Kaliachak-I">Mothabari Police Station</option>
+                            <option value="Baishnabnagar" data-block="Kaliachak-I">Baishnabnagar Police Station</option>
+                            
+                            <!-- Kaliachak-II Police Stations -->
+                            <option value="Kaliachak" data-block="Kaliachak-II">Kaliachak Police Station</option>
+                            <option value="Baishnabnagar" data-block="Kaliachak-II">Baishnabnagar Police Station</option>
+                            <option value="Mothabari" data-block="Kaliachak-II">Mothabari Police Station</option>
+                            
+                            <!-- Kaliachak-III Police Stations -->
+                            <option value="Kaliachak" data-block="Kaliachak-III">Kaliachak Police Station</option>
+                            <option value="Baishnabnagar" data-block="Kaliachak-III">Baishnabnagar Police Station</option>
+                            <option value="Mothabari" data-block="Kaliachak-III">Mothabari Police Station</option>
+                            
+                            <!-- Chanchal-I Police Stations -->
+                            <option value="Chanchal" data-block="Chanchal-I">Chanchal Police Station</option>
+                            <option value="Malatipur" data-block="Chanchal-I">Malatipur Police Station</option>
+                            
+                            <!-- Chanchal-II Police Stations -->
+                            <option value="Chanchal" data-block="Chanchal-II">Chanchal Police Station</option>
+                            <option value="Malatipur" data-block="Chanchal-II">Malatipur Police Station</option>
+                            
+                            <!-- Manikchak Police Stations -->
+                            <option value="Manikchak" data-block="Manikchak">Manikchak Police Station</option>
+                            <option value="Lalbathani" data-block="Manikchak">Lalbathani Police Station</option>
+                            
+                            <!-- Ratua-I Police Stations -->
+                            <option value="Ratua" data-block="Ratua-I">Ratua Police Station</option>
+                            <option value="Samsi" data-block="Ratua-I">Samsi Police Station</option>
+                            
+                            <!-- Ratua-II Police Stations -->
+                            <option value="Ratua" data-block="Ratua-II">Ratua Police Station</option>
+                            <option value="Samsi" data-block="Ratua-II">Samsi Police Station</option>
+
+                            <!-- Additional Police Stations -->
+                            <option value="Pukhuria" data-block="English Bazar">Pukhuria Police Station</option>
+                            <option value="Bhutni" data-block="Manikchak">Bhutni Police Station</option>
+                            <option value="Cyber" data-block="English Bazar">Cyber Police Station</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="animate-fade-in">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Phone: +91 9775765498 / +91 9775862051</p>
+                <p>Location: Kumbhira, Sabdalpur, Baishnabnagar, Malda - 732201</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="our_courses.html">Courses</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; NCTC 2025. All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        function generateAppointmentNumber() {
+            const date = new Date();
+            // Get time components
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            
+            // Get date components
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+
+            // Create appointment number in format: NCTC/HHMMSS-DDMMYYYY/MP
+            return `NCTC/${hours}${minutes}${seconds}-${day}${month}${year}/MP`;
+        }
+
+        function formatDate(date) {
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        function sendLocationViaWhatsApp() {
+            const appointmentNumber = generateAppointmentNumber();
+            const appointmentDate = formatDate(new Date());
+            
+            // Create receipt message
+            const receipt = `🎓 *NCTC Appointment Receipt*
+----------------------------------
+*Appointment Number:* ${appointmentNumber}
+*Date & Time:* ${appointmentDate}
+*Location:* Kumbhira, Sabdalpur, Baishnabnagar, Malda - 732201
+
+*Contact Details:*
+Phone: +91 9775765498 / +91 9775862051
+Email: sahidaktar468@gmail.com
+
+*Important Notes:*
+1. Please arrive 15 minutes before your appointment
+2. Bring original documents for verification
+3. Valid ID proof is mandatory
+
+*Save this receipt for future reference*
+----------------------------------
+Thank you for choosing NCTC!`;
+
+            // WhatsApp number
+            const whatsappNumber = "919775765498";
+            
+            // Create WhatsApp link with receipt
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(receipt)}`;
+            
+            // Open WhatsApp
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function hideMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.style.right = '-200px';
+        }
+
+        function showMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.style.right = '0';
+        }
+
+        // Toggle submenu on mobile
+        document.querySelectorAll('.has-submenu').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if(window.innerWidth <= 768) {
+                    this.classList.toggle('active');
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Location functionality
+        function useCurrentLocation(button) {
+            if ("geolocation" in navigator) {
+                button.disabled = true;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Getting Location...';
+                
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // Here you would typically send these coordinates to your server
+                    // or use them to determine the user's location
+                    console.log("Latitude:", position.coords.latitude);
+                    console.log("Longitude:", position.coords.longitude);
+                    
+                    button.innerHTML = '<i class="fas fa-check"></i> Location Found';
+                    button.classList.add('success');
+                }, function(error) {
+                    button.innerHTML = '<i class="fas fa-map-marker-alt"></i> Try Again';
+                    button.disabled = false;
+                    alert("Error getting location. Please try again.");
+                });
+            } else {
+                alert("Geolocation is not supported by your browser");
+            }
+        }
+
+        // Enable district select when state is selected
+        document.getElementById('state').addEventListener('change', function() {
+            document.getElementById('district').disabled = !this.value;
+        });
+
+        // Enable block select when district is selected
+        document.getElementById('district').addEventListener('change', function() {
+            document.getElementById('block').disabled = !this.value;
+            
+            // Filter blocks based on selected district
+            const blocks = document.querySelectorAll('#block option');
+            const selectedDistrict = this.value;
+            
+            blocks.forEach(block => {
+                if(block.dataset.district === selectedDistrict || block.value === "") {
+                    block.style.display = "block";
+                } else {
+                    block.style.display = "none";
+                }
+            });
+        });
+
+        // Enable police station select when block is selected
+        document.getElementById('block').addEventListener('change', function() {
+            document.getElementById('police-station').disabled = !this.value;
+            
+            // Filter police stations based on selected block
+            const stations = document.querySelectorAll('#police-station option');
+            const selectedBlock = this.value;
+            
+            stations.forEach(station => {
+                if(station.dataset.block === selectedBlock || station.value === "") {
+                    station.style.display = "block";
+                } else {
+                    station.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
