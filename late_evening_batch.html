@@ -136,6 +136,21 @@
             margin-top: 5px;
             display: none;
         }
+
+        .clock-display {
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 20px 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .time-restriction {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -199,11 +214,14 @@
 
     <!-- Batch Content -->
     <section class="batch-content">
+        <div class="clock-display">
+            Current Time: <span id="currentTime"></span>
+        </div>
         <div class="instructions">
             <h3>Instructions for Online Class</h3>
             <ul>
-                <li>Enter your receipt number provided during admission</li>
-                <li>The receipt number will be verified before providing access</li>
+                <li>Enter your verification number provided during admission</li>
+                <li>The verification number will be verified before providing access</li>
                 <li>Make sure you have a stable internet connection</li>
                 <li>Join the class 5 minutes before the scheduled time</li>
                 <li>Keep your video on and microphone muted during the class</li>
@@ -217,7 +235,8 @@
                     <label for="receiptNumber">Receipt Number</label>
                     <input type="text" id="receiptNumber" name="receiptNumber" required 
                            placeholder="Enter your receipt number">
-                    <div class="error-message" id="errorMessage">Invalid receipt number. Please try again.</div>
+                    <div class="error-message" id="errorMessage">Invalid Verification Number. Enter correct verification number. If forgotten, contact with your Teacher or Director</div>
+                    <div class="time-restriction" id="timeRestriction">This is not correct time to Join The Class. Join The Class Before 15 minuit of Class time.</div>
                 </div>
                 <button type="submit" class="submit-btn">Verify & Join Class</button>
             </form>
@@ -255,24 +274,61 @@
     </footer>
 
     <script>
+        // Add clock functionality
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            document.getElementById('currentTime').textContent = timeString;
+        }
+        
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function isWithinClassTime() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            
+            // Convert current time to minutes since midnight
+            const currentTimeInMinutes = currentHour * 60 + currentMinute;
+            
+            // Late evening batch: 5:30 PM - 7:30 PM
+            const classStartTime = 17 * 60 + 30; // 5:30 PM
+            const classEndTime = 19 * 60 + 30; // 7:30 PM
+            const earlyJoinTime = classStartTime - 15; // 15 minutes before class
+            const lateJoinTime = classEndTime + 15; // 15 minutes after class ends
+            
+            return currentTimeInMinutes >= earlyJoinTime && currentTimeInMinutes <= lateJoinTime;
+        }
+
         function verifyReceipt(event) {
             event.preventDefault();
             
             const receiptNumber = document.getElementById('receiptNumber').value;
             const errorMessage = document.getElementById('errorMessage');
+            const timeRestriction = document.getElementById('timeRestriction');
             const meetLink = document.getElementById('meetLink');
             
-            // Here you would typically make an API call to verify the receipt number
-            // For now, we'll just show the meet link after a brief delay to simulate verification
-            setTimeout(() => {
-                if (receiptNumber.trim() !== '') {
-                    errorMessage.style.display = 'none';
-                    meetLink.style.display = 'block';
-                    document.querySelector('.verification-form').style.display = 'none';
-                } else {
-                    errorMessage.style.display = 'block';
-                }
-            }, 1000);
+            // First check if it's within allowed time
+            if (!isWithinClassTime()) {
+                timeRestriction.style.display = 'block';
+                errorMessage.style.display = 'none';
+                return;
+            }
+            
+            timeRestriction.style.display = 'none';
+            
+            // Validate receipt number format: NCTC/XXXXXXXXXXAA
+            const receiptPattern = /^NCTC\/\d{10}[A-Z]{2}$/;
+            
+            if (receiptPattern.test(receiptNumber)) {
+                errorMessage.style.display = 'none';
+                meetLink.style.display = 'block';
+                document.querySelector('.verification-form').style.display = 'none';
+            } else {
+                errorMessage.textContent = 'Invalid Verification Number. Enter correct verification number. If forgotten, contact with your Teacher or Director';
+                errorMessage.style.display = 'block';
+            }
         }
 
         function hideMenu() {
