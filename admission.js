@@ -203,11 +203,38 @@ function generateReceiptNumber(name, course) {
     return `NCTC/${timestamp}${name[0]}${course[0]}`;
 }
 
-// Send to WhatsApp
-function sendToWhatsApp(receiptNo) {
+// Send to WhatsApp with files
+async function sendToWhatsApp(receiptNo) {
     const data = getFormData();
     const whatsappMsg = generateWhatsAppMessage(data, receiptNo);
-    window.location.replace(`https://wa.me/919775765498?text=${encodeURIComponent(whatsappMsg)}`);
+    
+    // Get all file inputs
+    const photoInput = document.getElementById('photo');
+    const aadharInput = document.getElementById('aadhar');
+    const marksheetInput = document.getElementById('marksheet');
+    
+    // Create a folder name using receipt number
+    const folderName = `NCTC_Admission_${receiptNo}`;
+    
+    // Create Google Drive upload link
+    const driveLink = `https://drive.google.com/drive/folders/create?usp=sharing&folderName=${encodeURIComponent(folderName)}`;
+    
+    // Add file upload instructions to the message
+    const fileInstructions = `
+*Please upload your documents to Google Drive:*
+1. Click this link to create a folder: ${driveLink}
+2. Upload these files to the folder:
+   - Passport Photo
+   - Aadhar Card
+   - Marksheet
+3. Share the folder with: sahidaktar468@gmail.com
+4. Send the folder link in this chat
+
+Thank you for your cooperation!`;
+
+    // Send the complete message
+    const completeMessage = whatsappMsg + fileInstructions;
+    window.open(`https://wa.me/919775765498?text=${encodeURIComponent(completeMessage)}`, '_blank');
 }
 
 // Generate receipt HTML
@@ -281,40 +308,43 @@ Email: ${data.email}
 Course: ${data.course}
 Batch: ${getBatchTiming(data.batch)}
 
+*Address Details:*
+State: ${data.state}
+District: ${data.district}
+Address: ${data.address}
+PIN Code: ${data.pincode}
+
 Thank you for choosing NCTC!
 `;
 }
 
-// Initialize file validation
+// Initialize file validation and display
 function initializeFileValidation() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
     
     fileInputs.forEach(input => {
         input.addEventListener('change', function(e) {
             const file = e.target.files[0];
-            if (!file) return;
-
-            // Check file size
-            const maxSize = input.id === 'photo' ? 1024 * 1024 : 2 * 1024 * 1024; // 1MB for photo, 2MB for others
-            if (file.size > maxSize) {
-                const sizeInMB = maxSize / (1024 * 1024);
-                showError(`File size should not exceed ${sizeInMB}MB`);
-                input.value = '';
-                return;
-            }
-
-            // Check file type
-            if (input.id === 'photo') {
-                if (!file.type.match('image.*')) {
-                    showError('Please upload a valid image file');
-                    input.value = '';
+            if (file) {
+                // Validate file size
+                const maxSize = this.id === 'photo' ? 1024 * 1024 : 2 * 1024 * 1024; // 1MB for photo, 2MB for others
+                if (file.size > maxSize) {
+                    showError(`File size should be less than ${maxSize / (1024 * 1024)}MB`);
+                    this.value = '';
                     return;
                 }
-            } else {
-                if (!file.type.match('image.*') && file.type !== 'application/pdf') {
-                    showError('Please upload a valid image or PDF file');
-                    input.value = '';
-                    return;
+
+                // Display file name
+                const uploadBox = this.closest('.upload-box');
+                const fileNameDisplay = uploadBox.querySelector('.file-name') || document.createElement('p');
+                fileNameDisplay.className = 'file-name';
+                fileNameDisplay.style.color = '#2563eb';
+                fileNameDisplay.style.marginTop = '8px';
+                fileNameDisplay.style.fontSize = '0.9rem';
+                fileNameDisplay.textContent = `Selected: ${file.name}`;
+                
+                if (!uploadBox.querySelector('.file-name')) {
+                    uploadBox.appendChild(fileNameDisplay);
                 }
             }
         });
@@ -323,6 +353,64 @@ function initializeFileValidation() {
 
 // Initialize input validation
 function initializeInputValidation() {
+    // Date of Birth validation for minimum age
+    const dobInput = document.getElementById('dob');
+    if (dobInput) {
+        // Create age display element
+        const ageDisplay = document.createElement('span');
+        ageDisplay.className = 'age-display';
+        ageDisplay.style.marginLeft = '10px';
+        ageDisplay.style.color = '#2563eb';
+        ageDisplay.style.fontSize = '0.9rem';
+        dobInput.parentNode.appendChild(ageDisplay);
+
+        dobInput.addEventListener('change', function(e) {
+            const dob = new Date(e.target.value);
+            const today = new Date();
+            
+            // Calculate exact age
+            let years = today.getFullYear() - dob.getFullYear();
+            let months = today.getMonth() - dob.getMonth();
+            let days = today.getDate() - dob.getDate();
+
+            // Adjust for negative months or days
+            if (days < 0) {
+                months--;
+                // Get the last day of the previous month
+                const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                days += lastMonth.getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Calculate total months for more precise age
+            const totalMonths = years * 12 + months;
+            const actualAge = years;
+
+            // Update age display with detailed information
+            ageDisplay.textContent = `Age: ${years} years, ${months} months, ${days} days`;
+            
+            if (actualAge < 16) {
+                showError('You must be at least 16 years old to apply');
+                e.target.value = '';
+                e.target.classList.add('error');
+                ageDisplay.style.color = '#dc2626'; // Red color for invalid age
+            } else {
+                e.target.classList.remove('error');
+                ageDisplay.style.color = '#2563eb'; // Blue color for valid age
+            }
+        });
+
+        // Clear age display when DOB is cleared
+        dobInput.addEventListener('input', function(e) {
+            if (!e.target.value) {
+                ageDisplay.textContent = '';
+            }
+        });
+    }
+
     // Phone number validation
     const phoneInput = document.getElementById('phone');
     if (phoneInput) {
@@ -409,6 +497,7 @@ function validateForm() {
     const requiredFields = form.querySelectorAll('[required]');
     let isValid = true;
 
+    // Check required fields
     requiredFields.forEach(field => {
         if (!field.value) {
             field.classList.add('error');
@@ -417,6 +506,26 @@ function validateForm() {
             field.classList.remove('error');
         }
     });
+
+    // Check age requirement
+    const dobInput = document.getElementById('dob');
+    if (dobInput && dobInput.value) {
+        const dob = new Date(dobInput.value);
+        const today = new Date();
+        const age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+        
+        // Adjust age if birthday hasn't occurred this year
+        const actualAge = monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate()) 
+            ? age - 1 
+            : age;
+
+        if (actualAge < 16) {
+            showError('You must be at least 16 years old to apply');
+            dobInput.classList.add('error');
+            isValid = false;
+        }
+    }
 
     return isValid;
 }
