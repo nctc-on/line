@@ -50,7 +50,7 @@ p { font-size: clamp(1rem, 2vw, 1.2rem); }
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 5%;
+    padding: 0.8rem 5%;
     background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     position: fixed;
     width: 100%;
@@ -111,6 +111,9 @@ p { font-size: clamp(1rem, 2vw, 1.2rem); }
 .nav-links {
     flex: 1;
     text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .nav-links ul {
@@ -119,24 +122,25 @@ p { font-size: clamp(1rem, 2vw, 1.2rem); }
     list-style: none;
     margin: 0;
     padding: 0;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .nav-links ul li {
     position: relative;
     padding: 0.5rem 0;
-    margin: 0 1.5rem;
+    margin: 0 0.5rem;
 }
 
 .nav-links ul li a {
     color: var(--white);
     text-decoration: none;
-    font-size: 1.1rem;
-    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 8px;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: block;
 }
 
 .nav-links ul li a::before {
@@ -176,13 +180,13 @@ p { font-size: clamp(1rem, 2vw, 1.2rem); }
     left: 50%;
     transform: translateX(-50%) scaleY(0.8);
     background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-    min-width: 220px;
+    min-width: 250px;
     padding: 1rem 0;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     opacity: 0;
     visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: all 0.3s ease;
     z-index: 1000;
     border: 2px solid var(--secondary-color);
 }
@@ -297,76 +301,142 @@ p { font-size: clamp(1rem, 2vw, 1.2rem); }
 }
 
 /* Responsive Navigation */
+@media (max-width: 1200px) {
+    .nav-links ul li {
+        margin: 0 0.3rem;
+    }
+    
+    .nav-links ul li a {
+        font-size: 0.95rem;
+        padding: 0.5rem 0.8rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar {
+        padding: 0.8rem 3%;
+    }
+
+    .nav-links ul li {
+        margin: 0 0.2rem;
+    }
+    
+    .nav-links ul li a {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.7rem;
+    }
+
+    .submenu {
+        min-width: 220px;
+    }
+}
+
 @media (max-width: 768px) {
+    .navbar {
+        padding: 0.8rem 5%;
+    }
+
     .nav-links {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-        height: 100vh;
-        width: 280px;
+        position: fixed;
         top: 0;
-        right: -280px;
-        padding-top: 20px;
-        box-shadow: -5px 0 15px rgba(0,0,0,0.2);
-        border-left: 3px solid var(--secondary-color);
+        right: -100%;
+        width: 80%;
+        max-width: 400px;
+        height: 100vh;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 80px 20px 20px;
+        transition: 0.5s ease;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
     }
 
     .nav-links.active {
         right: 0;
-        animation: slideIn 0.5s forwards;
+    }
+
+    .nav-links ul {
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
     }
 
     .nav-links ul li {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-
-    .nav-links.active ul li {
-        animation: fadeInUp 0.5s forwards;
-        animation-delay: calc(0.1s * var(--i));
+        width: 100%;
+        margin: 0;
+        padding: 0;
     }
 
     .nav-links ul li a {
-        padding: 1rem 2rem;
-        border-radius: 0;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .nav-links ul li a:hover {
-        background: var(--secondary-color);
-        color: var(--primary-dark);
-        padding-left: 2.5rem;
+        padding: 1rem;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        margin: 0.2rem 0;
     }
 
     .submenu {
         position: static;
         transform: none;
-        background: rgba(255,255,255,0.1);
+        width: 100%;
+        min-width: 100%;
+        background: rgba(255, 255, 255, 0.1);
         border: none;
         box-shadow: none;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.4s ease;
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        display: none;
     }
 
     .has-submenu:hover .submenu {
-        max-height: 300px;
+        display: block;
     }
 
     .submenu::before {
         display: none;
     }
 
-    .submenu li a {
-        padding: 0.8rem 3rem !important;
-        color: var(--white) !important;
+    .submenu li {
+        transform: none;
+        opacity: 1;
     }
 
-    .submenu li a:hover {
-        background: var(--secondary-color);
-        color: var(--primary-dark) !important;
+    .submenu li a {
+        padding: 0.8rem 1rem;
+        color: var(--white);
+    }
+
+    .fa-bars, .fa-times {
+        display: block;
+        font-size: 1.5rem;
+        color: var(--white);
+        cursor: pointer;
+        transition: 0.3s ease;
     }
 
     .fa-times {
-        display: none !important;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    .logo-img {
+        height: 50px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        padding: 0.8rem 4%;
+    }
+
+    .nav-links {
+        width: 100%;
+        max-width: none;
+    }
+
+    .nav-links ul li a {
+        font-size: 1rem;
+        padding: 0.8rem;
     }
 
     .logo-img {
@@ -800,24 +870,6 @@ footer {
     
     .logo-img {
         height: 40px;
-    }
-    
-    .grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-    
-    .hero-section {
-        height: 350px;
-    }
-    
-    .section-padding {
-        padding: 40px 0;
-    }
-    
-    .button {
-        padding: 10px 20px;
-        font-size: 1rem;
     }
 }
 
