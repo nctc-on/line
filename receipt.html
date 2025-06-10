@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Receipt NCTC</title>
+    <link rel="stylesheet" href="receipt.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-section">
+            <h1>Generate Admission Receipt</h1>
+            <form id="receiptForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="centerName">School/Centre Name:</label>
+                        <input type="text" id="centerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="centerAddress">School/Centre Address:</label>
+                        <input type="text" id="centerAddress" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="studentName">Student Name:</label>
+                        <input type="text" id="studentName" name="studentName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentDOB">Date of Birth:</label>
+                        <input type="date" id="studentDOB" name="studentDOB" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fatherName">Father's Name:</label>
+                        <input type="text" id="fatherName" name="fatherName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="motherName">Mother's Name:</label>
+                        <input type="text" id="motherName" name="motherName" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="studentPhone">Student Phone:</label>
+                    <input type="tel" id="studentPhone" name="studentPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="studentEmail">Email:</label>
+                    <input type="email" id="studentEmail" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="registrationNo">Registration Number:</label>
+                        <input type="text" id="registrationNo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="classType">Class Type:</label>
+                        <select id="classType" required>
+                            <option value="online">Online</option>
+                            <option value="offline">Offline</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group course-section">
+                    <label for="courseName">Course Name:</label>
+                    <input type="text" id="courseName" name="courseName" class="course-input" required>
+                </div>
+                <div class="form-group course-section">
+                    <label for="coursePrice">Course Price (INR):</label>
+                    <input type="number" id="coursePrice" name="coursePrice" class="course-input" required>
+                </div>
+                <div class="form-group payment-section">
+                    <label for="paidBefore">Amount Paid Before (INR):</label>
+                    <input type="number" id="paidBefore" name="paidBefore" class="payment-input" required>
+                </div>
+                <div class="form-group payment-section">
+                    <label for="paidToday">Amount Paid Today (INR):</label>
+                    <input type="number" id="paidToday" name="paidToday" class="payment-input" required>
+                </div>
+                <div class="form-group batch-section">
+                    <label for="batchTime">Batch:</label>
+                    <select id="batchTime" name="batchTime" class="batch-input" required>
+                        <option value="">Select Batch</option>
+                        <option value="Morning">Morning</option>
+                        <option value="Pre-Noon">Pre-Noon</option>
+                        <option value="Afternoon">Afternoon</option>
+                        <option value="Evening">Evening</option>
+                        <option value="Late Evening">Late Evening</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="discount">Discount (%):</label>
+                        <input type="number" id="discount" step="0.01" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="gst">GST (%):</label>
+                        <input type="number" id="gst" step="0.01" value="18">
+                    </div>
+                </div>
+
+                <button type="submit">Generate Receipt</button>
+            </form>
+        </div>
+
+        <div class="receipt-section" id="receiptOutput">
+            <!-- Receipt content will be generated here -->
+            <div class="receipt-header">
+                <h2 id="outputCenterName">NCTC</h2>
+                <p id="outputCenterAddress"></p>
+                <hr>
+            </div>
+            <div class="receipt-title">
+                <h3>ADMISSION RECEIPT</h3>
+                <p>Receipt No: <span id="receiptNo"></span></p>
+                <p>Date: <span id="receiptDate"></span></p>
+            </div>
+            <div class="details-section">
+                <div class="student-details">
+                    <h4>Student Details</h4>
+                    <div class="receipt-details">
+                        <div class="receipt-row">
+                            <div class="receipt-label">Student Name:</div>
+                            <div class="receipt-value" id="outputStudentName"></div>
+                        </div>
+                        <div class="receipt-row">
+                            <div class="receipt-label">Date of Birth:</div>
+                            <div class="receipt-value" id="outputStudentDOB"></div>
+                        </div>
+                        <div class="receipt-row">
+                            <div class="receipt-label">Father's Name:</div>
+                            <div class="receipt-value" id="outputFatherName"></div>
+                        </div>
+                        <div class="receipt-row">
+                            <div class="receipt-label">Mother's Name:</div>
+                            <div class="receipt-value" id="outputMotherName"></div>
+                        </div>
+                        <div class="receipt-row">
+                            <div class="receipt-label">Student Phone:</div>
+                            <div class="receipt-value" id="outputStudentPhone"></div>
+                        </div>
+                    </div>
+                    <p><strong>Email:</strong> <span id="outputStudentEmail"></span></p>
+                    <p><strong>Registration No:</strong> <span id="outputRegistrationNo"></span></p>
+                    <p><strong>Class Type:</strong> <span id="outputClassType"></span></p>
+                </div>
+                <div class="course-details">
+                    <h4>Course Details</h4>
+                    <p><strong>Course:</strong> <span id="outputCourseName"></span></p>
+                    <p><strong>Batch:</strong> <span id="outputBatchTime"></span></p>
+                    <p><strong>Price:</strong> INR <span id="outputCoursePrice"></span></p>
+                    <p><strong>Discount:</strong> <span id="outputDiscount"></span>%</p>
+                    <p><strong>GST:</strong> <span id="outputGst"></span>%</p>
+                    <p><strong>Total:</strong> INR <span id="outputTotalPrice"></span></p>
+                    <p><strong>Paid Before:</strong> INR <span id="outputPaidBefore"></span></p>
+                    <p><strong>Paid Today:</strong> INR <span id="outputPaidToday"></span></p>
+                    <p><strong>Total Paid:</strong> INR <span id="outputTotalPaid"></span></p>
+                    <p><strong>Due:</strong> INR <span id="outputDue"></span></p>
+                    <p><strong>Payment Status:</strong> <span id="outputPaymentStatus"></span></p>
+                </div>
+            </div>
+            <div class="contact-info">
+                <p>Contact: +91 9775765498 / +91 9775862051</p>
+                <p>Email: sahidaktar468@gmail.com</p>
+            </div>
+            <div class="director-signature">
+                <img src="sign.png" alt="Director's Signature" class="signature-image">
+                <p>Director's Signature</p>
+            </div>
+            <button id="printReceipt">Print Receipt</button>
+            <!-- I will not add download PDF functionality in the first pass, as it requires a library. I can add it later if needed. -->
+        </div>
+    </div>
+    <script src="abc.js"></script>
+</body>
+</html> 

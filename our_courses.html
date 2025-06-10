@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-2145053445415805">
+    <title>Our Courses - National Computer Training Centre</title>
+    <link rel="icon" type="image/jpg" href="logo.jpg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="courses.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2145053445415805"
+     crossorigin="anonymous"></script>
+    <style>
+        /* Course Page Specific Styles */
+        .course-hero {
+            height: 50vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3') center/cover;
+            margin-top: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .course-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 4rem 5%;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .course-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover .course-image img {
+            transform: scale(1.1);
+        }
+
+        .course-content {
+            padding: 2rem;
+        }
+
+        .course-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .course-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .course-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: var(--light-bg);
+        }
+
+        .course-duration {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-dark);
+        }
+
+        /* Inquiry Form Styles */
+        .inquiry-section {
+            background: var(--light-bg);
+            padding: 4rem 5%;
+        }
+
+        .inquiry-section h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .inquiry-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .inquiry-form input,
+        .inquiry-form select,
+        .inquiry-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .inquiry-form button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .inquiry-form button:hover {
+            background: var(--primary-dark);
+        }
+
+        .inquiry-number {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--light-bg);
+            border-radius: 5px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .course-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .course-grid {
+                padding: 2rem;
+            }
+
+            .course-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.jpg" alt="NCTC Logo" class="logo-img">
+                </a>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <i class="fas fa-times" onclick="hideMenu()"></i>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li class="has-submenu">
+                        <a href="about_us.html">About Us</a>
+                        <ul class="submenu">
+                            <li><a href="mission.html">Our Mission</a></li>
+                            <li><a href="recognition.html">Recognition</a></li>
+                            <li><a href="director.html">Director's Message</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="our_courses.html" class="active">Our Courses</a></li>
+                    <li class="has-submenu">
+                        <a href="#">Admission</a>
+                        <ul class="submenu">
+                            <li><a href="online_admission.html">Online Admission</a></li>
+                            <li><a href="offline_admission.html">Offline Admission</a></li>
+                            <li><a href="receipt.html">Manual Receipt Generator</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#">Online Class</a>
+                        <ul class="submenu">
+                            <li><a href="morning_batch.html">Morning Batch <span class="batch-time">(8:00 AM - 10:00 AM)</span></a></li>
+                            <li><a href="prenoon_batch.html">Pre-Noon Batch <span class="batch-time">(10:30 AM - 12:30 PM)</span></a></li>
+                            <li><a href="afternoon_batch.html">Afternoon Batch <span class="batch-time">(1:00 PM - 3:00 PM)</span></a></li>
+                            <li><a href="evening_batch.html">Evening Batch <span class="batch-time">(3:15 PM - 5:15 PM)</span></a></li>
+                            <li><a href="late_evening_batch.html">Late Evening Batch <span class="batch-time">(5:30 PM - 7:30 PM)</span></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="noticeboard.html">Notice Board</a></li>
+                    <li><a href="exam.html">Online Exam</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <i class="fas fa-bars" onclick="showMenu()"></i>
+        </nav>
+    </header>
+
+    <!-- Course Hero Section -->
+    <section class="course-hero">
+        <div class="hero-content">
+            <h1>Our Courses</h1>
+            <p>Empowering you with industry-relevant skills</p>
+        </div>
+    </section>
+
+    <!-- Courses Grid -->
+    <section class="course-grid">
+        <div class="course-card">
+            <div class="course-image">
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97" alt="DCA">
+            </div>
+            <div class="course-content">
+                <h3>DCA - Diploma in Computer Applications</h3>
+                <p>Comprehensive course covering computer fundamentals, office applications, and basic programming.</p>
+            </div>
+            <div class="course-details">
+                <div class="course-duration">
+                    <i class="fas fa-clock"></i>
+                    <span>6 Months</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="course-image">
+                <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd" alt="ADCA">
+            </div>
+            <div class="course-content">
+                <h3>ADCA - Advanced Diploma in Computer Applications</h3>
+                <p>Advanced level course covering advanced computer applications, programming, and software development.</p>
+            </div>
+            <div class="course-details">
+                <div class="course-duration">
+                    <i class="fas fa-clock"></i>
+                    <span>12 Months</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="course-image">
+                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0" alt="DTP">
+            </div>
+            <div class="course-content">
+                <h3>DTP - Desktop Publishing</h3>
+                <p>Learn professional desktop publishing, graphic design, and digital media creation.</p>
+            </div>
+            <div class="course-details">
+                <div class="course-duration">
+                    <i class="fas fa-clock"></i>
+                    <span>6 Months</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="course-image">
+                <img src="https://images.unsplash.com/photo-1551434678-e076c223a692" alt="BCC">
+            </div>
+            <div class="course-content">
+                <h3>BCC - Basic Computer Course</h3>
+                <p>Foundation course covering basic computer operations, internet usage, and essential software applications.</p>
+            </div>
+            <div class="course-details">
+                <div class="course-duration">
+                    <i class="fas fa-clock"></i>
+                    <span>3 Months</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Inquiry Section -->
+    <section class="inquiry-section">
+        <div class="container">
+            <h2>Course Inquiry Form</h2>
+            <form class="inquiry-form" id="courseInquiryForm">
+                <input type="text" name="name" id="name" placeholder="Your Full Name" required>
+                <input type="text" name="title" id="title" placeholder="Your Title (Mr/Mrs/Ms/Dr)" required>
+                <select name="course" id="course" required>
+                    <option value="">Select Course</option>
+                    <option value="DCA">DCA - Diploma in Computer Applications</option>
+                    <option value="ADCA">ADCA - Advanced Diploma in Computer Applications</option>
+                    <option value="DDTP">DDTP - Diploma in Desktop Publishing</option>
+                    <option value="DFA">DFA - Diploma in Financial Accounting</option>
+                    <option value="DOAP">DOAP - Diploma in Office Automation & Publishing</option>
+                </select>
+                <input type="tel" name="phone" id="phone" placeholder="Phone Number" required>
+                <input type="email" name="email" id="email" placeholder="Email Address">
+                <textarea name="message" id="message" placeholder="Your Message (Optional)" rows="4"></textarea>
+                <button type="submit">Submit Inquiry</button>
+            </form>
+            <div id="inquiryNumber" class="inquiry-number"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Phone: +91 9775765498 / +91 9775862051</p>
+                <p>Location: Kumbhira, Sabdalpur, Baishnabnagar, Malda - 732201</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="our_courses.html">Courses</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; NCTC 2025. All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        function generateInquiryNumber(name, title) {
+            const now = new Date();
+            
+            // Get date components
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = String(now.getFullYear()).slice(-2);
+            
+            // Get time components
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+            
+            // Get name and title initials
+            const nameInitials = name.split(' ')
+                .map(word => word.charAt(0).toUpperCase())
+                .join('');
+            const titleInitial = title.charAt(0).toUpperCase();
+            
+            // Construct inquiry number
+            return `NCTC/${day}${month}${year}${nameInitials}${titleInitial}${hours}${minutes}${seconds}${milliseconds}M`;
+        }
+
+        // Form submission handler
+        document.getElementById('courseInquiryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = this.name.value;
+            const title = this.title.value;
+            const course = this.course.value;
+            const phone = this.phone.value;
+            const email = this.email.value;
+            const message = this.message.value;
+            
+            // Generate inquiry number
+            const inquiryNumber = generateInquiryNumber(name, title);
+            
+            // Display inquiry number
+            const inquiryNumberDiv = document.getElementById('inquiryNumber');
+            inquiryNumberDiv.style.display = 'block';
+            inquiryNumberDiv.innerHTML = `
+                <h3>Thank you for your inquiry!</h3>
+                <p>Your Inquiry Number: <strong>${inquiryNumber}</strong></p>
+                <p>Please save this number for future reference.</p>
+                <p>You will be redirected to WhatsApp/SMS in a few seconds...</p>
+            `;
+
+            // Prepare message for WhatsApp/SMS
+            const whatsappMessage = encodeURIComponent(
+                `🎓 *NCTC Course Inquiry*\n\n` +
+                `📝 *Inquiry Number:*\n${inquiryNumber}\n\n` +
+                `👤 *Student Details:*\n` +
+                `Name: ${title} ${name}\n` +
+                `Phone: ${phone}\n` +
+                `Email: ${email}\n\n` +
+                `📚 *Course Selected:*\n${course}\n\n` +
+                `💬 *Additional Message:*\n${message || 'No additional message'}\n\n` +
+                `Thank you for your interest in NCTC!`
+            );
+
+            // Reset form
+            this.reset();
+            
+            // Scroll to inquiry number
+            inquiryNumberDiv.scrollIntoView({ behavior: 'smooth' });
+
+            // Redirect to WhatsApp after a short delay
+            setTimeout(() => {
+                // Try WhatsApp first
+                const whatsappUrl = `https://wa.me/919775765498?text=${whatsappMessage}`;
+                const smsUrl = `sms:+919775765498?body=${whatsappMessage}`;
+
+                // Create a fallback link for SMS
+                const fallbackLink = document.createElement('a');
+                fallbackLink.href = smsUrl;
+                fallbackLink.style.display = 'none';
+                document.body.appendChild(fallbackLink);
+
+                // Try opening WhatsApp
+                window.location.href = whatsappUrl;
+
+                // Fallback to SMS after a short delay if WhatsApp doesn't open
+                setTimeout(() => {
+                    fallbackLink.click();
+                    document.body.removeChild(fallbackLink);
+                }, 2000);
+            }, 2000);
+        });
+
+        function hideMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.style.right = '-200px';
+        }
+
+        function showMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.style.right = '0';
+        }
+
+        // Toggle submenu on mobile
+        document.querySelectorAll('.has-submenu').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if(window.innerWidth <= 768) {
+                    this.classList.toggle('active');
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
