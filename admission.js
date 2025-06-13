@@ -1,7 +1,28 @@
+// Course configuration
+const COURSE_CONFIG = {
+    'DCA': {
+        price: 2650,
+        paymentLink: 'https://payments.cashfree.com/forms/NCTC'
+    },
+    'ADCA': {
+        price: 3150,
+        paymentLink: 'https://payments.cashfree.com/forms/aadca'
+    },
+    'BCC': {
+        price: 1650,
+        paymentLink: 'https://payments.cashfree.com/forms/bbcc'
+    },
+    'DTP': {
+        price: 1750,
+        paymentLink: 'https://payments.cashfree.com/forms/DTPP'
+    }
+};
+
 // Initialize form handling when document loads
 document.addEventListener('DOMContentLoaded', function() {
     initializeForm();
     initializeLocationDropdowns();
+    initializeCoursePrice();
 });
 
 // Initialize form
@@ -21,7 +42,7 @@ function initializeForm() {
 
 // Handle form submission
 async function handleFormSubmit(e) {
-        e.preventDefault();
+    e.preventDefault();
 
     // Validate form
     if (!validateForm()) {
@@ -40,13 +61,13 @@ async function handleFormSubmit(e) {
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
-        // Generate receipt number
-        const receiptNo = generateReceiptNumber(data.fullName, data.course);
+        // Generate receipt and registration numbers
+        const { receiptNo, registrationNo } = generateReceiptNumber(data.fullName, data.course);
 
         // Create receipt container
         const receiptContainer = document.createElement('div');
         receiptContainer.className = 'receipt-container';
-        receiptContainer.innerHTML = generateReceiptHTML(data, receiptNo);
+        receiptContainer.innerHTML = generateReceiptHTML(data, receiptNo, registrationNo);
 
         // Create action buttons
         const actionsDiv = document.createElement('div');
@@ -55,8 +76,11 @@ async function handleFormSubmit(e) {
             <button onclick="printReceipt()" class="print-btn">
                 <i class="fas fa-print"></i> Print Receipt
             </button>
-            <button onclick="sendToWhatsApp('${receiptNo}')" class="whatsapp-btn">
+            <button onclick="sendToWhatsApp('${receiptNo}', '${registrationNo}')" class="whatsapp-btn">
                 <i class="fab fa-whatsapp"></i> Continue to WhatsApp
+            </button>
+            <button onclick="redirectToPayment('${data.course}', '${receiptNo}', '${registrationNo}')" class="payment-btn">
+                <i class="fas fa-credit-card"></i> Make Payment
             </button>
         `;
         receiptContainer.appendChild(actionsDiv);
@@ -84,7 +108,7 @@ async function handleFormSubmit(e) {
                 background: #f8fafc;
                 border-top: 1px solid #e2e8f0;
             }
-            .print-btn, .whatsapp-btn {
+            .print-btn, .whatsapp-btn, .payment-btn {
                 padding: 12px 24px;
                 border: none;
                 border-radius: 6px;
@@ -104,7 +128,11 @@ async function handleFormSubmit(e) {
                 background: #25d366;
                 color: white;
             }
-            .print-btn:hover, .whatsapp-btn:hover {
+            .payment-btn {
+                background: #f59e0b;
+                color: white;
+            }
+            .print-btn:hover, .whatsapp-btn:hover, .payment-btn:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             }
@@ -200,13 +228,23 @@ function generateReceiptNumber(name, course) {
         String(now.getHours()).padStart(2, '0') +
         String(now.getMinutes()).padStart(2, '0');
     
-    return `NCTC/${timestamp}${name[0]}${course[0]}`;
+    // Generate registration number in format: NCTC/hhmmss(millisecond)(name first letter)
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+    const nameInitial = name.charAt(0).toUpperCase();
+    
+    const receiptNo = `NCTC/${timestamp}${name[0]}${course[0]}`;
+    const registrationNo = `NCTC/${hours}${minutes}${seconds}${milliseconds}${nameInitial}`;
+    
+    return { receiptNo, registrationNo };
 }
 
 // Send to WhatsApp with files
-async function sendToWhatsApp(receiptNo) {
+async function sendToWhatsApp(receiptNo, registrationNo) {
     const data = getFormData();
-    const whatsappMsg = generateWhatsAppMessage(data, receiptNo);
+    const whatsappMsg = generateWhatsAppMessage(data, receiptNo, registrationNo);
     
     // Get all file inputs
     const photoInput = document.getElementById('photo');
@@ -238,13 +276,15 @@ Thank you for your cooperation!`;
 }
 
 // Generate receipt HTML
-function generateReceiptHTML(data, receiptNo) {
+function generateReceiptHTML(data, receiptNo, registrationNo) {
     const now = new Date();
     const dateTimeString = now.toLocaleDateString('en-IN', { 
         day: '2-digit',
         month: 'long',
         year: 'numeric'
     }) + ' ' + now.toLocaleTimeString('en-IN');
+
+    const coursePrice = COURSE_CONFIG[data.course]?.price || 0;
 
     return `
         <div id="receipt" style="padding: 15px; font-family: Arial, sans-serif; background: white;">
@@ -259,6 +299,7 @@ function generateReceiptHTML(data, receiptNo) {
                 <h2 style="color: #2563eb; margin: 0; font-size: 18px;">ADMISSION RECEIPT</h2>
                 <p style="color: #64748b; font-size: 12px; margin: 5px 0;">
                     Receipt No: <strong>${receiptNo}</strong><br>
+                    Registration No: <strong>${registrationNo}</strong><br>
                     Date: <strong>${dateTimeString}</strong>
                 </p>
             </div>
@@ -275,6 +316,7 @@ function generateReceiptHTML(data, receiptNo) {
                     <h3 style="color: #1e293b; margin: 0 0 8px 0; font-size: 14px;">Course Details</h3>
                     <p style="margin: 4px 0;"><strong>Course:</strong> ${data.course}</p>
                     <p style="margin: 4px 0;"><strong>Batch:</strong> ${getBatchTiming(data.batch)}</p>
+                    <p style="margin: 4px 0;"><strong>Course Fee:</strong> ₹${coursePrice}</p>
                 </div>
             </div>
 
@@ -294,10 +336,13 @@ function generateReceiptHTML(data, receiptNo) {
 }
 
 // Generate WhatsApp message
-function generateWhatsAppMessage(data, receiptNo) {
+function generateWhatsAppMessage(data, receiptNo, registrationNo) {
+    const coursePrice = COURSE_CONFIG[data.course]?.price || 0;
+    
     return `
 *NCTC Admission Details*
 Receipt No: ${receiptNo}
+Registration No: ${registrationNo}
 
 *Student Details:*
 Name: ${data.fullName}
@@ -307,6 +352,7 @@ Email: ${data.email}
 *Course Details:*
 Course: ${data.course}
 Batch: ${getBatchTiming(data.batch)}
+Course Fee: ₹${coursePrice}
 
 *Address Details:*
 State: ${data.state}
@@ -574,4 +620,58 @@ function getBatchTiming(batchValue) {
         'batch5': '05:30 PM - 07:30 PM'
     };
     return batchTimings[batchValue] || batchValue;
+}
+
+// Initialize course price display
+function initializeCoursePrice() {
+    const courseSelect = document.getElementById('course');
+    const priceDisplay = document.createElement('div');
+    priceDisplay.className = 'course-price-display';
+    priceDisplay.style.marginTop = '10px';
+    priceDisplay.style.color = '#2563eb';
+    priceDisplay.style.fontWeight = 'bold';
+    courseSelect.parentNode.appendChild(priceDisplay);
+
+    courseSelect.addEventListener('change', function(e) {
+        const selectedCourse = e.target.value;
+        if (selectedCourse && COURSE_CONFIG[selectedCourse]) {
+            priceDisplay.textContent = `Course Price: ₹${COURSE_CONFIG[selectedCourse].price}`;
+        } else {
+            priceDisplay.textContent = '';
+        }
+    });
+}
+
+// Add payment redirection function
+function redirectToPayment(course, receiptNo, registrationNo) {
+    if (COURSE_CONFIG[course]) {
+        const paymentLink = COURSE_CONFIG[course].paymentLink;
+        const studentName = document.getElementById('fullName').value;
+        const studentEmail = document.getElementById('email').value;
+        const studentPhone = document.getElementById('phone').value;
+        const coursePrice = COURSE_CONFIG[course].price;
+        
+        // Create payment URL with only essential details
+        const paymentUrl = new URL(paymentLink);
+        
+        // Add parameters with correct field names for Cashfree form auto-filling
+        const params = new URLSearchParams({
+            'customerName': studentName,
+            'customerEmail': studentEmail,
+            'customerPhone': studentPhone,
+            'orderAmount': coursePrice,
+            'orderId': registrationNo,
+            'orderCurrency': 'INR',
+            'orderNote': `Course: ${course}`,
+            'source': 'website',
+            'returnUrl': window.location.origin + '/payment-success.html',
+            'notifyUrl': window.location.origin + '/payment-notify.html'
+        });
+        
+        // Append parameters to URL
+        paymentUrl.search = params.toString();
+        
+        // Redirect to payment page
+        window.location.href = paymentUrl.toString();
+    }
 } 
