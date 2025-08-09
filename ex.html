@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Online Exam - National Computer Training Centre</title>
+    <link rel="icon" type="image/jpg" href="logo.jpg"/>
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        /* Keep same styling as original with minimal inline CSS for error display */
+        :root{
+            --primary-color:#007bff;
+            --primary-dark:#0056b3;
+        }
+        body{font-family: Arial, Helvetica, sans-serif; margin:0; padding:0; background:#f7f7f7;}
+        .exam-hero {
+            height: 50vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                        url('https://images.unsplash.com/photo-1501504905252-473c47e087f8') center/cover;
+            margin-top: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        .exam-hero h1 {font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);}
+        .exam-container {max-width: 800px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1);}
+        .exam-header {background: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 30px; display:flex; justify-content:space-between; align-items:center;}
+        .exam-info {display:flex; gap:20px;}
+        .info-item {display:flex; align-items:center; gap:10px;}
+        .info-item i {color:var(--primary-color); font-size:1.2rem;}
+        .timer {position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: white; padding: 10px 20px; border-radius: 5px; font-size: 1.2rem; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); display:none;}
+        .timer.warning {background: #ffc107; color:#000;}
+        .timer.danger {background:#dc3545; animation:pulse 1s infinite;}
+        @keyframes pulse {0%{transform:scale(1);}50%{transform:scale(1.05);}100%{transform:scale(1);}}
+        .exam-form {background:white; padding:30px; border-radius:10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+        .question {margin-bottom:2rem; padding:1rem; border:1px solid #ddd; border-radius:5px;}
+        .question h3 {color:var(--primary-color); margin-bottom:15px; font-size:1.2rem;}
+        .options {margin-top:1rem;}
+        .option {margin:0.5rem 0;}
+        .option label {margin-left:0.5rem;}
+        .submit-section {text-align:center; margin-top:30px;}
+        .submit-btn {background:var(--primary-color); color:white; border:none; padding:15px 40px; border-radius:5px; font-size:1.1rem; cursor:pointer; transition:all .3s ease;}
+        .submit-btn:hover {background:var(--primary-dark); transform:translateY(-2px);}
+        .progress-bar {width:100%; height:10px; background:#eee; border-radius:5px; margin:20px 0; overflow:hidden;}
+        .progress {height:100%; background:var(--primary-color); width:0%; transition:width .3s ease;}
+        @media (max-width:768px){
+            .exam-hero h1{font-size:2.5rem;}
+            .exam-header{flex-direction:column; gap:15px;}
+            .exam-info{flex-direction:column; gap:10px;}
+            .timer{width:100%; text-align:center;}
+        }
+        .registration-form{margin-bottom:2rem;}
+        .form-group{margin-bottom:1rem;}
+        .form-group label{display:block; margin-bottom:.5rem; font-weight:600;}
+        .form-group input{width:100%; padding:.8rem; border:1px solid #ddd; border-radius:5px; font-size:1rem;}
+        .exam-section{display:none;}
+        .results-section{display:none; margin-top:2rem;}
+        .result-item{margin:1rem 0; padding:1rem; border:1px solid #ddd; border-radius:5px;}
+        .correct{color:#28a745;}
+        .incorrect{color:#dc3545;}
+        .score-display{font-size:1.5rem; font-weight:bold; text-align:center; margin:1rem 0;}
+        .error-message { color:#dc3545; font-size:0.95rem; margin-top:0.4rem; display:none; }
+    </style>
+</head>
+<body>
+    <!-- Timer Display -->
+    <div class="timer" id="examTimer">
+        Time Remaining: <span id="timeDisplay">00:00:00</span>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar" style="position:fixed;top:0;left:0;right:0;background:#fff;z-index:10;padding:10px 20px;box-shadow:0 2px 6px rgba(0,0,0,0.08);">
+            <div style="display:flex;align-items:center;gap:20px;">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="logo.jpg" alt="NCTC Logo" class="logo-img" style="height:40px;">
+                    </a>
+                </div>
+                <div style="font-weight:700;">National Computer Training Centre</div>
+            </div>
+            <div style="float:right;">
+                <i class="fas fa-bars" onclick="/* show menu */"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Exam Hero Section -->
+    <section class="exam-hero">
+        <div class="hero-content">
+            <h1>Online Examination</h1>
+            <p>Test your knowledge and skills</p>
+        </div>
+    </section>
+
+    <!-- Exam Container -->
+    <section class="exam-container" style="margin-top:40px;">
+        <div class="exam-header">
+            <div class="exam-info">
+                <div class="info-item">
+                    <i class="fas fa-book"></i>
+                    <span>Course: DCA/ADCA</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Total Questions: 10</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Time: 30 Minutes</span>
+                </div>
+            </div>
+            <div class="timer" id="timer" style="display:block;">30:00</div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="registration-form" id="registrationForm">
+            <h2>Exam Registration</h2>
+            <form id="examRegistration" novalidate>
+                <div class="form-group">
+                    <label for="regNumber">Registration Number:</label>
+                    <input type="text" id="regNumber" name="regNumber" placeholder="NCTC/1234567890S" required>
+                    <div class="error-message" id="regNumberError">Registration number must be in format: NCTC/1234567890S</div>
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="mobile">Mobile Number:</label>
+                    <input type="tel" id="mobile" name="mobile" required>
+                </div>
+                <button type="submit" class="submit-btn">Start Exam</button>
+            </form>
+        </div>
+
+        <!-- Exam Section -->
+        <div class="exam-section" id="examSection">
+            <h2 id="welcomeName">Welcome</h2>
+
+            <form id="examForm">
+                <!-- QUESTION 1 -->
+                <div class="question">
+                    <h3>1. What is the full form of CPU?</h3>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q1" value="a" id="q1a" required> <label for="q1a">Central Processing Unit</label></div>
+                        <div class="option"><input type="radio" name="q1" value="b" id="q1b"> <label for="q1b">Central Process Unit</label></div>
+                        <div class="option"><input type="radio" name="q1" value="c" id="q1c"> <label for="q1c">Computer Processing Unit</label></div>
+                        <div class="option"><input type="radio" name="q1" value="d" id="q1d"> <label for="q1d">Computer Process Unit</label></div>
+                    </div>
+                </div>
+
+                <!-- QUESTION 2 -->
+                <div class="question">
+                    <h3>2. Which of the following is not an operating system?</h3>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q2" value="a" id="q2a" required> <label for="q2a">Windows</label></div>
+                        <div class="option"><input type="radio" name="q2" value="b" id="q2b"> <label for="q2b">Linux</label></div>
+                        <div class="option"><input type="radio" name="q2" value="c" id="q2c"> <label for="q2c">Microsoft Office</label></div>
+                        <div class="option"><input type="radio" name="q2" value="d" id="q2d"> <label for="q2d">MacOS</label></div>
+                    </div>
+                </div>
+
+                <!-- QUESTION 3 -->
+                <div class="question">
+                    <h3>3. What is the shortcut key to save a document in MS Word?</h3>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q3" value="a" id="q3a" required> <label for="q3a">Ctrl + S</label></div>
+                        <div class="option"><input type="radio" name="q3" value="b" id="q3b"> <label for="q3b">Ctrl + A</label></div>
+                        <div class="option"><input type="radio" name="q3" value="c" id="q3c"> <label for="q3c">Ctrl + C</label></div>
+                        <div class="option"><input type="radio" name="q3" value="d" id="q3d"> <label for="q3d">Ctrl + V</label></div>
+                    </div>
+                </div>
+
+                <!-- QUESTION 4 -->
+                <div class="question">
+                    <h3>4. Which of the following is a spreadsheet software?</h3>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q4" value="a" id="q4a" required> <label for="q4a">MS Word</label></div>
+                        <div class="option"><input type="radio" name="q4" value="b" id="q4b"> <label for="q4b">MS Excel</label></div>
+                        <div class="option"><input type="radio" name="q4" value="c" id="q4c"> <label for="q4c">MS PowerPoint</label></div>
+                        <div class="option"><input type="radio" name="q4" value="d" id="q4d"> <label for="q4d">MS Access</label></div>
+                    </div>
+                </div>
+
+                <!-- QUESTION 5 -->
+                <div class="question">
+                    <h3>5. What is the full form of HTML?</h3>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q5" value="a" id="q5a" required> <label for="q5a">Hyper Text Markup Language</label></div>
+                        <div class="option"><input type="radio" name="q5" value="b" id="q5b"> <label for="q5b">High Text Markup Language</label></div>
+                        <div class="option"><input type="radio" name="q5" value="c" id="q5c"> <label for="q5c">Hyper Text Mark Language</label></div>
+                        <div class="option"><input type="radio" name="q5" value="d" id="q5d"> <label for="q5d">Hyper Text Markup List</label></div>
+                    </div>
+                </div>
+
+                <!-- QUESTION 6 -->
+                <div class="question">
+                    <h3>6. Which of the following is a programming language?</h3>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q6" value="a" id="q6a" required> <label for="q6a">MS Word</label></div>
+                        <div class="option"><input type="radio" name="q6" value="b" id="q6b"> <label for="q6b">Java</label></div>
+                        <div class="option"><input type="radio" name="q6" value="c" id="q6c"> <label for="q6c">Windows</label></div>
+                        <div class="option"><input type="radio" name="q6" value="d" id="q6d"> <label for="q6d">Internet Explorer</label></div>
+                    </div>
+                </div>
+
+                <!-- QUESTION 7 -->
+                <div class="question">
+                    <h3>7. What is the shortcut key to copy text?</h3>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q7" value="a" id="q7a" required> <label for="q7a">Ctrl + X</label></div>
+                        <div class="option"><input type="radio" name="q7" value="b" id="q7b"> <label for="q7b">Ctrl + C</label></div>
+                        <div class="option"><input type="radio" name="q7" value="c" id="q7c"> <label for="q7c">Ctrl + V</label></div>
+                        <div class="option"><input type="radio" name="q7" value="d" id="q7d"> <label for="q7d">Ctrl + Z</label></div>
+                    </div>
+                </div>
+
+                <!-- QUESTION 8 -->
+                <div class="question">
+                    <h3>8. Which of the following is a web browser?</h3>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q8" value="a" id="q8a" required> <label for="q8a">MS Word</label></div>
+                        <div class="option"><input type="radio" name="q8" value="b" id="q8b"> <label for="q8b">Google Chrome</label></div>
+                        <div class="option"><input type="radio" name="q8" value="c" id="q8c"> <label for="q8c">MS Excel</label></div>
+                        <div class="option"><input type="radio" name="q8" value="d" id="q8d"> <label for="q8d">MS PowerPoint</label></div>
+                    </div>
+                </div>
+
+                <!-- QUESTION 9 -->
+                <div class="question">
+                    <h3>9. What is the full form of RAM?</h3>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q9" value="a" id="q9a" required> <label for="q9a">Random Access Memory</label></div>
+                        <div class="option"><input type="radio" name="q9" value="b" id="q9b"> <label for="q9b">Readily Available Memory</label></div>
+                        <div class="option"><input type="radio" name="q9" value="c" id="q9c"> <label for="q9c">Run Access Memory</label></div>
+                        <div class="option"><input type="radio" name="q9" value="d" id="q9d"> <label for="q9d">Random Access Module</label></div>
+                    </div>
+                </div>
+
+                <!-- QUESTION 10 -->
+                <div class="question">
+                    <h3>10. Which of these is an example of an input device?</h3>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q10" value="a" id="q10a" required> <label for="q10a">Keyboard</label></div>
+                        <div class="option"><input type="radio" name="q10" value="b" id="q10b"> <label for="q10b">Monitor</label></div>
+                        <div class="option"><input type="radio" name="q10" value="c" id="q10c"> <label for="q10c">Printer</label></div>
+                        <div class="option"><input type="radio" name="q10" value="d" id="q10d"> <label for="q10d">Speaker</label></div>
+                    </div>
+                </div>
+
+                <div class="submit-section">
+                    <button type="submit" class="submit-btn">Submit Answers</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results section placeholder -->
+        <div class="results-section" id="resultsSection"></div>
+    </section>
+
+<script>
+(function(){
+    const regForm = document.getElementById('examRegistration');
+    const regInput = document.getElementById('regNumber');
+    const regError = document.getElementById('regNumberError');
+    const regContainer = document.getElementById('registrationForm');
+    const examSection = document.getElementById('examSection');
+    const welcomeName = document.getElementById('welcomeName');
+
+    // Regex: must be NCTC/ followed by exactly 10 digits, ending with uppercase S
+    const regPattern = /^NCTC\/\d{10}S$/;
+
+    // Hide error initially
+    regError.style.display = 'none';
+
+    // Remove error message when user types or focuses
+    regInput.addEventListener('input', () => {
+        regError.style.display = 'none';
+    });
+
+    regForm.addEventListener('submit', function(e){
+        e.preventDefault();
+
+        // clear any earlier shown error
+        regError.style.display = 'none';
+
+        const regValue = regInput.value.trim();
+        const fullName = document.getElementById('fullName').value.trim();
+        const mobile = document.getElementById('mobile').value.trim();
+
+        // Validate registration number format
+        if (!regPattern.test(regValue)) {
+            regError.textContent = 'Registration number format is invalid. Example: NCTC/1234567890S';
+            regError.style.display = 'block';
+            regInput.focus();
+            return;
+        }
+
+        // Optionally validate other fields (basic)
+        if (fullName === '') {
+            alert('Please enter your full name.');
+            document.getElementById('fullName').focus();
+            return;
+        }
+        if (mobile === '') {
+            alert('Please enter your mobile number.');
+            document.getElementById('mobile').focus();
+            return;
+        }
+
+        // Passed validation: hide registration form and show exam section
+        regContainer.style.display = 'none';
+        examSection.style.display = 'block';
+        welcomeName.textContent = 'Welcome, ' + (fullName || 'Candidate');
+
+        // Save registration to localStorage (optional) so it remains if user refreshes
+        try {
+            localStorage.setItem('nctc_reg', regValue);
+            localStorage.setItem('nctc_name', fullName);
+            localStorage.setItem('nctc_mobile', mobile);
+        } catch (err) {
+            // ignore localStorage errors silently
+        }
+
+        // If you want to show the top timer where previously hidden
+        const pageTimer = document.getElementById('examTimer');
+        if (pageTimer) pageTimer.style.display = 'block';
+
+        // Start your exam timer here if available
+        // startTimer(30 * 60); // example: use a timer function you already have
+    });
+
+    // If user previously registered and page reload keeps data, auto show exam (optional)
+    window.addEventListener('load', () => {
+        try {
+            const savedReg = localStorage.getItem('nctc_reg');
+            const savedName = localStorage.getItem('nctc_name');
+            if (savedReg && regPattern.test(savedReg)) {
+                // auto-fill and show exam (if you prefer)
+                document.getElementById('regNumber').value = savedReg;
+                document.getElementById('fullName').value = savedName || '';
+                // Optionally auto-show exam:
+                // regContainer.style.display = 'none';
+                // examSection.style.display = 'block';
+                // welcomeName.textContent = 'Welcome, ' + (savedName || 'Candidate');
+            }
+        } catch (err) {
+            // ignore localStorage read errors
+        }
+    });
+
+    // Optional: simple form submit for exam answers (client-side scoring placeholder)
+    const examForm = document.getElementById('examForm');
+    const resultsSection = document.getElementById('resultsSection');
+    examForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        // Example answers map (you can change)
+        const answers = {
+            q1: 'a', q2: 'c', q3: 'a', q4: 'b', q5: 'a',
+            q6: 'b', q7: 'b', q8: 'b', q9: 'a', q10: 'a'
+        };
+        let score = 0, total = Object.keys(answers).length;
+        for (let i=1;i<=total;i++){
+            const name = 'q' + i;
+            const el = examForm.querySelector('[name="' + name + '"]:checked');
+            const val = el ? el.value : null;
+            if (val && val === answers[name]) score++;
+        }
+        // Show score
+        resultsSection.innerHTML = '<div class="score-display">Your Score: ' + score + ' / ' + total + '</div>';
+        resultsSection.style.display = 'block';
+        // Optionally hide exam after submit or disable inputs
+        // examSection.style.display = 'none';
+    });
+
+})();
+</script>
+</body>
+</html>
